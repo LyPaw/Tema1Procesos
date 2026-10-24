@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guía de estudio UD1: Programación multiproceso. Basado en las dos presentaciones PowerPoint y los ejercicios de la carpeta.">
+  <title>UD1 · Programación Multiproceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=SF+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" media="print" onload="this.media='all'">
+</head>
+<body>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand" aria-label="Marca de la plataforma">
+      <div class="brand-icon">J</div>
+      <div>
+        <div class="brand-title">UD1 · Multiproceso</div>
+        <div class="brand-sub">Programación de servicios y procesos</div>
+      </div>
+    </div>
+
+    <div class="nav-caption">Inicio</div>
+    <nav>
+      <a href="#inicio" class="nav-link"><span class="nav-dot"></span>Portada y progreso</a>
+    </nav>
+
+    <div class="nav-caption">Teoría · Nociones previas</div>
+    <nav>
+      <a href="#tema-concurrencia" class="nav-link"><span class="nav-dot"></span>Concurrencia, paralelo y distribuido</a>
+    </nav>
+
+    <div class="nav-caption">Teoría · Procesos y SO</div>
+    <nav>
+      <a href="#tema-proceso" class="nav-link"><span class="nav-dot"></span>¿Qué es un proceso?</a>
+      <a href="#tema-bcp" class="nav-link"><span class="nav-dot"></span>El BCP</a>
+      <a href="#tema-estados" class="nav-link"><span class="nav-dot"></span>Estados de un proceso</a>
+      <a href="#tema-ps" class="nav-link"><span class="nav-dot"></span>Comando ps y monitores</a>
+    </nav>
+
+    <div class="nav-caption">Teoría · C / Linux</div>
+    <nav>
+      <a href="#tema-system" class="nav-link"><span class="nav-dot"></span>system(), execl(), fork()</a>
+      <a href="#tema-pid" class="nav-link"><span class="nav-dot"></span>PID, getpid, getppid, wait</a>
+      <a href="#tema-pipes" class="nav-link"><span class="nav-dot"></span>Pipes sin nombre</a>
+      <a href="#tema-fifo" class="nav-link"><span class="nav-dot"></span>FIFOs con nombre</a>
+      <a href="#tema-senales" class="nav-link"><span class="nav-dot"></span>Señales y sincronización</a>
+    </nav>
+
+    <div class="nav-caption">Teoría · Java</div>
+    <nav>
+      <a href="#tema-java-procesos" class="nav-link"><span class="nav-dot"></span>Creación de procesos en Java</a>
+      <a href="#tema-java-clases" class="nav-link"><span class="nav-dot"></span>Clases Process y ProcessBuilder</a>
+      <a href="#tema-java-ejemplos" class="nav-link"><span class="nav-dot"></span>Ejemplos prácticos Java</a>
+    </nav>
+
+    <div class="nav-caption">Práctica</div>
+    <nav>
+      <a href="#actividad-1-1" class="nav-link"><span class="nav-dot"></span>Actividad 1.1</a>
+      <a href="#actividad-1-2" class="nav-link"><span class="nav-dot"></span>Actividad 1.2</a>
+      <a href="#actividad-1-3" class="nav-link"><span class="nav-dot"></span>Actividad 1.3</a>
+      <a href="#ejemplos-c" class="nav-link"><span class="nav-dot"></span>Ejemplos C resueltos</a>
+      <a href="#ejemplos-java" class="nav-link"><span class="nav-dot"></span>Ejemplos Java resueltos</a>
+    </nav>
+
+    <div class="nav-caption">Repaso</div>
+    <nav>
+      <a href="#repaso" class="nav-link"><span class="nav-dot"></span>Repaso rápido</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <p>Plataforma de estudio · UD1</p>
+      <p>Basado en las dos presentaciones PowerPoint</p>
+      <p>Funciona sin conexión</p>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN ==================== -->
+  <main class="main" id="main">
+    <header class="topbar" id="topbar">
+      <button class="btn-menu" id="btn-menu" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+      <div class="topbar-center">
+        <div class="topbar-title">Programación Multiproceso</div>
+        <div class="topbar-sub">UD1 · Teoría y ejercicios</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-icon" id="btn-dark" title="Modo oscuro" aria-label="Alternar modo oscuro">🌙</button>
+        <button class="btn-print" onclick="window.print()">Imprimir / PDF</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- BÚSQUEDA -->
+      <div class="search-wrap">
+        <label class="search-label" for="search">Buscar</label>
+        <input type="search" id="search" placeholder="Buscar tema, concepto o ejercicio…" aria-label="Buscar en la guía">
+        <span class="search-hint">Usa / para enfocar</span>
+      </div>
+
+      <!-- ==================== INICIO ==================== -->
+      <section id="inicio" class="section hero-section">
+        <div class="hero">
+          <div class="hero-badge">Unidad Didáctica 1</div>
+          <h1 class="hero-title">Programación Multiproceso</h1>
+          <p class="hero-desc">
+            Guía de estudio basada en las dos presentaciones PowerPoint de la unidad. Cubre fundamentos de concurrencia y paralelismo, procesos y sistema operativo, control de procesos en C/Linux (system, execl, fork, pipes, FIFOs, señales) y creación de procesos en Java (Runtime, ProcessBuilder, Process). Incluye las actividades resueltas y los ejemplos de código de las carpetas.
+          </p>
+          <div class="hero-tags">
+            <span class="tag">Concurrencia</span>
+            <span class="tag">Paralelismo</span>
+            <span class="tag">Distribuido</span>
+            <span class="tag">fork</span>
+            <span class="tag">pipes</span>
+            <span class="tag">FIFOs</span>
+            <span class="tag">señales</span>
+            <span class="tag">Runtime</span>
+            <span class="tag">ProcessBuilder</span>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-header">
+            <h2>Progreso del temario</h2>
+            <span class="progress-percent" id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+          <p class="progress-hint" id="progress-hint">Marca los temas que domines para seguir tu avance.</p>
+          <div id="progreso-checks" class="progreso-checks"></div>
+          <button class="btn" id="btn-reset-progreso">Reiniciar progreso</button>
+        </div>
+
+        <div class="quick-grid">
+          <a href="#tema-concurrencia" class="quick-card">
+            <span class="quick-icon">📘</span>
+            <h3>Nociones previas</h3>
+            <p>Concurrencia, paralelismo y programación distribuida.</p>
+          </a>
+          <a href="#tema-proceso" class="quick-card">
+            <span class="quick-icon">📘</span>
+            <h3>Procesos y SO</h3>
+            <p>Qué es un proceso, BCP, estados y comando ps.</p>
+          </a>
+          <a href="#tema-system" class="quick-card">
+            <span class="quick-icon">📘</span>
+            <h3>C / Linux</h3>
+            <p>system, execl, fork, pipes, FIFOs y señales.</p>
+          </a>
+          <a href="#tema-java-procesos" class="quick-card">
+            <span class="quick-icon">☕</span>
+            <h3>Java</h3>
+            <p>Runtime, ProcessBuilder y clase Process.</p>
+          </a>
+          <a href="#actividad-1-1" class="quick-card">
+            <span class="quick-icon">✅</span>
+            <h3>Actividades resueltas</h3>
+            <p>Actividades 1.1, 1.2 y 1.3 de las presentaciones.</p>
+          </a>
+          <a href="#repaso" class="quick-card">
+            <span class="quick-icon">⚡</span>
+            <h3>Repaso rápido</h3>
+            <p>Conceptos clave antes del examen.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- ==================== TEORÍA ==================== -->
+      <section id="teoria" class="section teoria-section">
+        <div class="section-header">
+          <h2>Teoría</h2>
+          <p>Contenido extraído directamente de las dos presentaciones PowerPoint de la unidad.</p>
+        </div>
+
+        <!-- Nociones previas -->
+        <article class="tema-card" id="tema-concurrencia" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">01</span>
+            <h3>Concurrencia, paralelismo y programación distribuida</h3>
+          </div>
+          <div class="tema-body">
+            <h4>Multitarea</h4>
+            <p>Capacidad de realizar varias tareas simultáneamente, frente a la restricción de la monotarea, donde las tareas se ejecutan una detrás de otra. Todos los sistemas operativos modernos (salvo los más antiguos, sencillos o limitados como MS-DOS o sistemas embebidos en Arduino) disponen de multitarea o multiproceso.</p>
+
+            <h4>Concurrencia</h4>
+            <p>Un sistema basado en un único procesador con un único núcleo es capaz de realizar multitarea mediante concurrencia. Los tiempos de CPU se distinguen entre los distintos procesos según una planificación dirigida por el sistema operativo. Si la CPU es lo suficientemente rápida, el número de procesos limitado y el planificador tiene un buen diseño, todas las tareas avanzarán a la vez (aparentemente) pese a que en un ciclo de CPU en un momento dado solo se pueda ejecutar una instrucción.</p>
+            <p>En una unidad de tiempo de computación solo avanza un proceso. La velocidad en la asignación de la CPU a los distintos procesos logra que no se perciba el cambio. Todas las tareas avanzan sin tener que esperar unas a que las otras terminen. Este tipo de computación se denomina concurrente.</p>
+
+            <h4>Procesamiento paralelo</h4>
+            <p>Los sistemas basados en varios procesadores o en procesadores de varios núcleos permiten ejecutar varias instrucciones en un único ciclo de reloj. Esta capacidad hace posible ejecutar en paralelo varias instrucciones. Los procesos se dividen en pequeñas subtareas (hilos) que se ejecutan en los diferentes núcleos, consiguiendo una reducción en los tiempos de ejecución de los procesos.</p>
+
+            <div class="comparison-table">
+              <table>
+                <thead><tr><th>Concepto</th><th>Definición</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Procesamiento concurrente</strong></td><td>Varios procesos se ejecutan en una misma unidad de proceso de manera alterna, provocando el avance simultáneo de los mismos y evitando la secuencialidad.</td></tr>
+                  <tr><td><strong>Procesamiento paralelo</strong></td><td>Divisiones de un proceso se ejecutan de manera simultánea en los diversos núcleos de ejecución de un procesador o diversos procesadores.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p><strong>Conclusión:</strong> el procesamiento concurrente es responsabilidad del sistema operativo mientras que el procesamiento paralelo es una responsabilidad compartida entre el sistema operativo y el programa.</p>
+
+            <h4>Programación distribuida</h4>
+            <p>Otro de los paradigmas de la programación multiproceso. En este tipo de arquitectura, la ejecución del software se distribuye entre varios ordenadores, consiguiendo disponer de una potencia de procesamiento mucho más elevada, escalable y, normalmente, económica. Para construir un sistema distribuido se requiere una red de ordenadores entre los que distribuir el trabajo.</p>
+            <p>Se puede definir el <strong>procesamiento distribuido</strong> como aquel en el que un proceso se ejecuta en unidades de computación independientes conectadas y sincronizadas.</p>
+
+            <div class="tema-resumen">
+              <strong>Mini-resumen:</strong> La concurrencia avanza tareas de forma alterna en un único núcleo; el paralelismo ejecuta varias instrucciones al mismo tiempo en varios núcleos; la distribución reparte el trabajo entre ordenadores conectados en red.
+            </div>
+          </div>
+        </article>
+
+        <!-- Proceso y SO -->
+        <article class="tema-card" id="tema-proceso" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">02</span>
+            <h3>¿Qué es un proceso?</h3>
+          </div>
+          <div class="tema-body">
+            <p>Un proceso es un programa en ejecución. Con el código ejecutable, los datos, la pila, el CP (contador de programa), el puntero de pila y otros registros.</p>
+            <p>Todos los programas se organizan como un conjunto de procesos. El sistema operativo toma la decisión de parar un proceso y arrancar otro. El proceso detenido debe restaurarse en el mismo estado antes del cambio de contexto.</p>
+            <div class="tema-resumen">
+              <strong>Mini-resumen:</strong> Un proceso es un programa en ejecución con su propio código, datos, pila, contador de programa y registros. El SO gestiona el cambio de contexto entre procesos.
+            </div>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-bcp" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">03</span>
+            <h3>El BCP (Bloque de Control de Proceso)</h3>
+          </div>
+          <div class="tema-body">
+            <p>Es una estructura de datos estática donde se almacena la siguiente información:</p>
+            <div class="table-wrap"><table><thead><tr><th>Información del BCP</th></tr></thead><tbody>
+              <tr><td>Identificación del proceso.</td></tr>
+              <tr><td>Estado del proceso.</td></tr>
+              <tr><td>Contador de programa.</td></tr>
+              <tr><td>Registros de la CPU.</td></tr>
+              <tr><td>Información de planificación de la CPU como la prioridad del proceso.</td></tr>
+              <tr><td>Información de gestión de memoria.</td></tr>
+              <tr><td>Información contable como la cantidad de tiempo de CPU y tiempo real consumido.</td></tr>
+              <tr><td>Información de estado de E/S como la lista de dispositivos asignados, archivos abiertos.</td></tr>
+            </tbody></table></div>
+            <div class="tema-resumen">
+              <strong>Mini-resumen:</strong> El BCP es la estructura de datos del SO que guarda toda la información administrativa de un proceso: identificación, estado, registros, memoria, prioridad, contabilidad y E/S.
+            </div>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-estados" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">04</span>
+            <h3>Estados de un proceso</h3>
+          </div>
+          <div class="tema-body">
+            <h4>Estados</h4>
+            <ul>
+              <li><strong>En ejecución:</strong> el proceso está ejecutándose, usando el procesador.</li>
+              <li><strong>Bloqueado:</strong> el proceso no puede hacer nada hasta que no ocurra un evento externo, como la finalización de una operación de E/S.</li>
+              <li><strong>Listo:</strong> parado temporalmente y listo para ejecutarse cuando se le dé la oportunidad.</li>
+            </ul>
+
+            <h4>Transiciones entre los estados</h4>
+            <ul>
+              <li><strong>En ejecución → Bloqueado:</strong> un proceso pasa de ejecución a bloqueado cuando espera la ocurrencia de un evento externo.</li>
+              <li><strong>Bloqueado → Listo:</strong> un proceso pasa de bloqueado a listo cuando ocurre el evento externo que se esperaba.</li>
+              <li><strong>Listo → En ejecución:</strong> un proceso pasa de listo a ejecución cuando el sistema le otorga un tiempo de CPU.</li>
+              <li><strong>En ejecución → Listo:</strong> un proceso pasa de ejecución a listo cuando se le acaba el tiempo asignado por el sistema operativo.</li>
+            </ul>
+
+            <div class="state-flow">
+              <div class="state run"><strong>En ejecución</strong><p>Está usando el procesador.</p></div>
+              <div class="state ready"><strong>Listo</strong><p>Listo para ejecutarse cuando el SO le asigne CPU.</p></div>
+              <div class="state blocked"><strong>Bloqueado</strong><p>Espera un evento externo (E/S, etc.).</p></div>
+            </div>
+
+            <div class="tema-resumen">
+              <strong>Mini-resumen:</strong> Los tres estados principales son en ejecución, listo y bloqueado. Las transiciones están gobernadas por el planificador del SO y por eventos externos como operaciones de E/S.
+            </div>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-ps" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">05</span>
+            <h3>Comando ps y monitores de procesos</h3>
+          </div>
+          <div class="tema-body">
+            <h4>Comando ps</h4>
+            <p>Sirve para ver la información asociada a cada proceso. Si escribimos en el Shell <code>ps</code> veremos la siguiente información:</p>
+            <div class="table-wrap"><table><thead><tr><th>Campo</th><th>Significado</th></tr></thead><tbody>
+              <tr><td><code>PID</code></td><td>Identificador del proceso.</td></tr>
+              <tr><td><code>TTY</code></td><td>Terminal asociado al que lee y escribe.</td></tr>
+              <tr><td><code>TIME</code></td><td>Tiempo de ejecución asociado, cantidad total de tiempo de CPU usado desde que nació.</td></tr>
+              <tr><td><code>CMD</code></td><td>Nombre del proceso.</td></tr>
+            </tbody></table></div>
+            <p>La orden <code>ps -f</code> muestra más información:</p>
+            <div class="table-wrap"><table><thead><tr><th>Campo</th><th>Significado</th></tr></thead><tbody>
+              <tr><td><code>UID</code></td><td>Nombre de usuario.</td></tr>
+              <tr><td><code>PPID</code></td><td>PID del padre de cada proceso.</td></tr>
+              <tr><td><code>C</code></td><td>Porcentaje de recursos de CPU utilizado por el proceso.</td></tr>
+              <tr><td><code>STIME</code></td><td>Hora de inicio del proceso.</td></tr>
+            </tbody></table></div>
+            <p>¿Qué pasar si usamos la orden <code>ps -AF</code>?</p>
+            <div class="table-wrap"><table><thead><tr><th>Campo</th><th>Significado</th></tr></thead><tbody>
+              <tr><td><code>SZ</code></td><td>Tamaño virtual de la imagen del proceso.</td></tr>
+              <tr><td><code>RSS</code></td><td>Tamaño de la parte residente en memoria en kilobytes.</td></tr>
+              <tr><td><code>PSR</code></td><td>Procesador que el proceso tiene actualmente asignado.</td></tr>
+            </tbody></table></div>
+
+            <h4>Interfaz gráfica de procesos</h4>
+            <p>En Ubuntu escribimos: <code>sudo gnome-system-monitor</code>.</p>
+            <p>En Windows, en la línea de comandos de DOS escribimos: <code>tasklist</code>.</p>
+            <p>Como ejemplo, podemos ver los que se ejecutan bajo la orden svchost.exe: <code>tasklist /svc /fi "imagename eq svchost.exe"</code>.</p>
+            <p>Aunque lo más típico es usar la combinación de teclas <strong>Ctrl + Alt + Supr</strong> para ver el Administrador de Tareas de Windows.</p>
+
+            <div class="code-wrap"><div class="code-head"><span class="file">Comandos Linux</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>ps
+ps -f
+ps -AF
+sudo gnome-system-monitor</code></pre></div>
+            <div class="code-wrap"><div class="code-head"><span class="file">CMD de Windows</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>tasklist
+tasklist /svc /fi "imagename eq svchost.exe"</code></pre></div>
+          </div>
+        </article>
+
+        <!-- C / Linux: system, execl, fork -->
+        <article class="tema-card" id="tema-system" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">06</span>
+            <h3>Control de procesos en C/Linux: system(), execl() y fork()</h3>
+          </div>
+          <div class="tema-body">
+            <h4>system()</h4>
+            <p>Alguna vez habremos necesitado dentro de un programa ejecutar otro programa. Para ello usaremos: <code>system()</code>, <code>fork</code>(), <code>execl</code>().</p>
+            <p>La función <code>system()</code> está en la librería <code>stdlib.h</code>, por lo que funciona en cualquier SO que tenga compilador de C/C++. Su formato es:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de system()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>int system(const char *cadena)</code></pre></div>
+            <p>Devuelve -1 en caso de error, y el comando en caso positivo.</p>
+            <p><strong>Ejemplo de programa:</strong> Listar el contenido del directorio actual y enviarlo a un fichero, abrir el <code>gedit</code> (o <code>kwrite</code>) con el fichero generado y ejecuta un comando que no existe en el intérprete de comandos de Linux.</p>
+
+            <h4>execl()</h4>
+            <p>La función <code>system</code> no se debe usar desde un programa con privilegios de administrador porque pudiera ser que se emplearan valores extraños para algunas variables de entorno y podrían comprometer la integridad del sistema. En este caso se usa <code>execl()</code>.</p>
+            <p>La función <code>execl()</code> tiene otras 5 funciones relacionadas (que no veremos). Realiza la ejecución y terminación del proceso. Es decir, su llamada permite sustituir el proceso llamante por uno nuevo. Su formato es:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de execl()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+int execl(const char *path_y_programa, const char *arg0, ..., char *argn, (char *)NULL);</code></pre></div>
+
+            <h4>fork()</h4>
+            <p>Hasta ahora hemos visto funciones que ejecutaban comandos ya sea en el intérprete de comandos o de ficheros en disco. Ahora veremos una función cuya misión es crear un proceso. Se trata de la función <code>fork()</code>. Su sintaxis es:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de fork()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+pid_t fork(void);</code></pre></div>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-pid" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">07</span>
+            <h3>fork(), PID, getpid, getppid y wait</h3>
+          </div>
+          <div class="tema-body">
+            <h4>La función fork()</h4>
+            <p>Al llamar a esta función se crea un nuevo proceso (proceso hijo) que es una copia exacta en código y datos del proceso que ha realizado la llamada (el proceso padre), salvo el PID y la memoria que ocupa.</p>
+            <p>Las variables del proceso hijo son una copia de las del padre, por lo que modificar una variable en uno de los procesos no se refleja en el otro (ya que tienen distintas memorias). Una vez realizada la copia, el proceso padre y el proceso hijo continúan la ejecución en el mismo punto y a partir de <code>fork()</code>.</p>
+
+            <h4>Valor devuelto por fork()</h4>
+            <ul>
+              <li>Devuelve -1 si se produce algún error en la ejecución.</li>
+              <li>Devuelve 0 si no se produce ningún error y nos encontramos en el proceso hijo.</li>
+              <li>Devuelve el PID asignado al proceso hijo si no se produce ningún error y nos encontramos en el proceso padre.</li>
+            </ul>
+
+            <h4>Obtener identificador de proceso o PID</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">getpid y getppid</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>pid_t getpid(void);
+pid_t getppid(void);</code></pre></div>
+            <ul>
+              <li><code>getpid()</code>: devuelve el identificador del proceso que realiza la llamada, es decir, del proceso actual.</li>
+              <li><code>getppid()</code>: devuelve el identificador del proceso padre del proceso actual.</li>
+            </ul>
+
+            <h4>wait()</h4>
+            <p>Se utiliza la función <code>wait()</code> para que el proceso padre espere la finalización del proceso hijo. Así, el proceso padre quedará bloqueado hasta que termine el hijo.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de wait()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>pid_t wait(int *status);</code></pre></div>
+            <p>La sentencia <code>wait(NULL)</code> es la forma más básica de esperar a que un hijo termine.</p>
+          </div>
+        </article>
+
+        <!-- Pipes -->
+        <article class="tema-card" id="tema-pipes" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">08</span>
+            <h3>Comunicación entre procesos: Pipes sin nombre</h3>
+          </div>
+          <div class="tema-body">
+            <h4>Pipes</h4>
+            <p>Existen varias formas de comunicación entre procesos (Inter-Process Communication o IPC) de Linux: pipes, colas de mensajes, semáforos y segmentos de memoria compartida. Trataremos los más simples, los pipes (tuberías en castellano).</p>
+            <p>Un pipe es una especie de falso fichero que sirve para conectar 2 procesos. Si el proceso A quiere enviar datos al proceso B, los escribe en el pipe como si fuera en un fichero de salida. El proceso B puede leer los datos sin más que leer el pipe como si se tratara de un fichero de entrada. Así, la comunicación entre procesos es parecida a la lectura y escritura en ficheros normales.</p>
+
+            <p>Cuando un proceso quiere leer el pipe y está vacío, tendrá que esperar (es decir, se bloqueará), hasta que algún otro proceso ponga datos en él. Igualmente, cuando un proceso intenta escribir en el pipe y está lleno, se bloqueará hasta que se vacíe.</p>
+            <p>El pipe es bidireccional, pero cada proceso lo usa en una única dirección. En este caso, el kernel gestiona la sincronización.</p>
+
+            <h4>Creación de un pipe</h4>
+            <p>Para crear un pipe se realiza una llamada a la función <code>pipe()</code>:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de pipe()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+int pipe(int fd[2]);</code></pre></div>
+            <p>Esta función solo recibe un argumento, que es un array de dos enteros: <code>fd[0]</code> contiene el descriptor para la lectura y <code>fd[1]</code> para la escritura. Si la función tiene éxito devuelve 0 y el array contendrá dos nuevos descriptores de archivos para ser usados por la tubería. Si ocurre algún error devuelve -1.</p>
+
+            <h4>Envío y recuperación de datos del pipe</h4>
+            <p>Para enviar datos al pipe se usa la función <code>write()</code>, y para recuperar datos del pipe se usa la función <code>read()</code>.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firmas de read() y write()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>int read(int fd, void *buf, int count);
+int write(int fd, void *buf, int count);</code></pre></div>
+            <p><code>read()</code> intenta leer <code>count</code> bytes del descriptor de fichero definido en <code>fd</code>, para guardarlos en el buffer <code>buf</code>. Devuelve el número de bytes leídos.</p>
+            <p><code>write()</code> es muy similar. A <code>buf</code> le damos el valor de lo que queramos escribir, definimos su tamaño en <code>count</code> y especificamos el fichero en el que escribiremos en <code>fd</code>.</p>
+
+            <div class="callout warn"><strong>Regla de oro:</strong> dado que los descriptores se comparten siempre debemos estar seguros de cerrar el extremo que no nos interesa.</div>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-fifo" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">09</span>
+            <h3>FIFOs con nombre</h3>
+          </div>
+          <div class="tema-body">
+            <p>Los pipes vistos anteriormente establecían un canal de comunicación entre procesos emparentados (padre-hijo). Los FIFOs permiten comunicar procesos que no tienen que estar emparentados.</p>
+            <p>Un FIFO es como un fichero con nombre que existe en el sistema de ficheros y que pueden abrir, leer y escribir múltiples procesos. Los datos escritos se leen como en una cola, primero en entrar (FIRST IN), primero en salir (FIRST OUT); y una vez leídos no pueden ser leídos de nuevo.</p>
+            <p>Los FIFOs tienen algunas diferencias con los ficheros:</p>
+            <ul>
+              <li>Una operación de escritura en un FIFO queda en espera hasta que el proceso pertinente abra el FIFO para iniciar la lectura.</li>
+              <li>Sólo se permite la escritura de información cuando un proceso vaya a recoger dicha información.</li>
+            </ul>
+
+            <h4>Formas de crear un FIFO</h4>
+            <p>Hay varias formas de crear un FIFO: ejecutando el comando <code>mkfifo</code> desde la línea de comandos de Linux o desde un programa C usando la función <code>mkfifo()</code>.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Comando mkfifo</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>mkfifo [opciones] nombreFichero</code></pre></div>
+
+            <h4>Crear un FIFO en C</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de mkfifo()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+mkfifo(const char *pathname, mode_t modo);</code></pre></div>
+            <p>Donde: <strong>Pathname</strong> es el nombre del dispositivo creado. <strong>Modo</strong> especifica tanto los permisos de uso y el tipo de nodo que se creará.</p>
+            <p>La función <code>mkfifo()</code> devuelve 0 si ha funcionado correctamente y -1 si ha habido algún error.</p>
+
+            <div class="callout"><strong>Ejemplo de uso:</strong> <code>mkfifo FIFO1</code> crea un FIFO llamado FIFO1. Luego <code>cat FIFO1</code> se queda a la espera; desde otra terminal <code>echo "Hola FIFO" &gt; FIFO1</code> envía información.</div>
+          </div>
+        </article>
+
+        <!-- Señales -->
+        <article class="tema-card" id="tema-senales" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">10</span>
+            <h3>Señales y sincronización entre procesos</h3>
+          </div>
+          <div class="tema-body">
+            <p>Para que los procesos interactúen unos con otros necesitan cierto nivel de sincronización, es decir, es necesario que haya un funcionamiento coordinado entre los procesos a la hora de ejecutar alguna tarea. Podemos utilizar señales para llevar a cabo la sincronización entre dos procesos.</p>
+
+            <h4>Señales</h4>
+            <p>Una señal es como un aviso que un proceso manda a otro proceso. La función <code>signal()</code> es el gestor de señales por excelencia que especifica la acción que debe realizarse cuando un proceso recibe una señal. Su formato es:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de signal()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;signal.h&gt;
+void (*signal(int Señal, void (*Func)(int))(int);</code></pre></div>
+
+            <h4>Parámetros</h4>
+            <ul>
+              <li><strong>Señal:</strong> contiene el número de señal que queremos capturar. En nuestro ejemplo pondremos SIGUSR1, que es una señal definida por el usuario para ser usada en programas de aplicación. Otra señal interesante es SIGKILL que se usa para terminar con un proceso.</li>
+              <li><strong>Func:</strong> contiene la función a la que queremos que se llame. Esta función es conocida como el manejador de la señal (signal handler).</li>
+            </ul>
+            <p>Un ejemplo de uso: <code>signal(SIGUSR1, gestion_padre)</code> significa que cuando el proceso (en el caso del padre) recibe una señal SIGUSR1 se realizará una llamada a la función <code>gestion_padre()</code>.</p>
+
+            <h4>Función kill()</h4>
+            <p>Para enviar una señal usaremos la función <code>kill()</code>:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de kill()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;signal.h&gt;
+int kill(int pid, int señal);</code></pre></div>
+            <p>Recibe dos parámetros: el PID del proceso que recibirá la señal y la señal. Por ejemplo: <code>kill(pid_padre, SIGUSR1)</code> envía una señal SIGUSR1 al proceso padre.</p>
+
+            <h4>Función pause()</h4>
+            <p>Cuando queremos que un proceso espere a que le llegue una señal, usamos la función <code>pause()</code>. Para capturar esa señal, el proceso debe haber establecido un tratamiento de la misma con la función <code>signal()</code>.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de pause()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>int pause(void);</code></pre></div>
+
+            <h4>Función sleep()</h4>
+            <p>La función <code>sleep()</code> suspende al proceso que realiza la llamada la cantidad de segundos indicada o hasta que se reciba una señal.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Firma de sleep()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+unsigned int sleep(unsigned int seconds);</code></pre></div>
+          </div>
+        </article>
+
+        <!-- Java: Creación de procesos -->
+        <article class="tema-card" id="tema-java-procesos" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">11</span>
+            <h3>Creación de procesos en Java: Runtime y ProcessBuilder</h3>
+          </div>
+          <div class="tema-body">
+            <p>Cada instancia de una aplicación en ejecución es un proceso. Cada proceso dispone de un conjunto de instrucciones, un estado de los registros del procesador, un espacio de memoria y un estado en lo referente a la gestión que hace de él el planificador del sistema operativo.</p>
+            <p>En esta unidad se aborda la programación de aplicaciones multiproceso como la capacidad de coordinar la ejecución de un conjunto de aplicaciones para lograr un objetivo común.</p>
+
+            <h4>Necesidades para programar un sistema basado en la ejecución de múltiples procesos</h4>
+            <ul>
+              <li>Poder arrancar un proceso y hacerle llegar los parámetros de ejecución.</li>
+              <li>Poder quedar a la espera de que el proceso termine.</li>
+              <li>Poder recoger el código de finalización de ejecución para determinar si el proceso se ha ejecutado correctamente o no.</li>
+              <li>Poder leer los datos generados por el proceso para su tratamiento.</li>
+            </ul>
+
+            <p>En Java, la creación de un proceso se puede realizar de dos maneras diferentes:</p>
+            <ul>
+              <li>Utilizando la clase <code>java.lang.Runtime</code>.</li>
+              <li>Utilizando la clase <code>java.lang.ProcessBuilder</code>.</li>
+            </ul>
+
+            <h4>Runtime</h4>
+            <p>Toda aplicación Java tiene una única instancia de la clase <code>Runtime</code> que permite que la propia aplicación interactúe con su entorno de ejecución a través del método estático <code>getRuntime()</code>. Este método proporciona un canal de comunicación entre la aplicación y su entorno, posibilitando la interacción con el sistema operativo a través del método <code>exec()</code>.</p>
+            <p>El siguiente código en Java genera un proceso en Windows indicando al entorno de ejecución (al sistema operativo) que ejecuta el bloc de notas a través del programa "Notepad.exe". En este caso, la llamada se realiza sin parámetros y sin gestionar de ninguna manera el proceso generado.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Runtime básico</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>Runtime.getRuntime().exec("Notepad.exe");</code></pre></div>
+
+            <p>En muchos casos, los procesos necesitan parámetros para iniciarse. El método <code>exec</code> puede recibir una cadena de caracteres (objeto de la clase String), y en dicha cadena, separados entre espacios, se indicarán, además del programa que quiere ejecutarse, los distintos parámetros.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Runtime con parámetros</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>Runtime.getRuntime().exec("Notepad.exe notas.txt");</code></pre></div>
+
+            <p>Alternativamente, se puede crear el proceso proporcionando un array de objetos String con el nombre del programa y los parámetros.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Runtime con array String</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>String[] infoProceso = {"Notepad.exe", "notas.txt"};
+Runtime.getRuntime().exec(infoProceso);</code></pre></div>
+            <p>El siguiente nivel consiste en gestionar el proceso lanzado. Para ello, se debe obtener la referencia a la instancia de la clase <code>Process</code> proporcionada por el método <code>exec</code>. Es este objeto el que proporciona los métodos para conocer el estado de la ejecución del proceso.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Runtime con referencia Process</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>String[] infoProceso = {"Notepad.exe", "notas.txt"};
+Process proceso = Runtime.getRuntime().exec(infoProceso);</code></pre></div>
+
+            <p>Si se necesita esperar a que el proceso ejecutado termine y conocer el estado en que ha finalizado dicha ejecución, se puede utilizar el método <code>waitFor</code>. Este método suspende la ejecución del programa que ha arrancado el proceso quedando a la espera de que este termine, proporcionando además el código de finalización.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Runtime con waitFor()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>String[] infoProceso = {"Notepad.exe", "notas.txt"};
+Process proceso = Runtime.getRuntime().exec(infoProceso);
+int codigoRetorno = proceso.waitFor();
+System.out.println("Fin de la ejecución: " + codigoRetorno);</code></pre></div>
+
+            <h4>ProcessBuilder</h4>
+            <p>Es similar a la clase Runtime. La creación más sencilla de un proceso se realiza con un único parámetro en el que se indica el programa a ejecutar. Es importante saber que esta construcción no supone la ejecución del proceso.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">ProcessBuilder básico</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>new ProcessBuilder("Notepad.exe");</code></pre></div>
+            <p>La ejecución del proceso se realiza a partir de la invocación al método <code>start</code>.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">ProcessBuilder con start()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>new ProcessBuilder("Notepad.exe").start();</code></pre></div>
+            <p>El constructor de ProcessBuilder admite parámetros que serán entregados al proceso que se crea.</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">ProcessBuilder con parámetros</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>new ProcessBuilder("Notepad.exe", "datos.txt").start();</code></pre></div>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-java-clases" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">12</span>
+            <h3>Clases Process y ProcessBuilder</h3>
+          </div>
+          <div class="tema-body">
+            <h4>Métodos de la clase Process</h4>
+            <p>Esta clase proporciona métodos para realizar la entrada desde el proceso, obtener la salida del proceso, esperar a que el proceso se complete, comprobar el estado de salida del proceso y destruir el proceso.</p>
+            <div class="table-wrap"><table><thead><tr><th>Método</th><th>Misión</th></tr></thead><tbody>
+              <tr><td><code>InputStream getInputStream()</code></td><td>Devuelve el flujo de entrada conectado a la salida normal del subproceso. Nos permite leer el stream de salida del subproceso, es decir, podemos leer lo que el comando que ejecutamos escribió en la consola.</td></tr>
+              <tr><td><code>int waitFor()</code></td><td>Provoca que el proceso actual espere hasta que el subproceso representado por el objeto Process finalice. Devuelve 0 si finaliza correctamente.</td></tr>
+              <tr><td><code>InputStream getErrorStream()</code></td><td>Devuelve el flujo de entrada conectado a la salida de error del subproceso. Nos va a permitir leer los posibles errores que se produzcan al lanzar el subproceso.</td></tr>
+              <tr><td><code>OutputStream getOutputStream()</code></td><td>Devuelve el flujo de salida conectado a la entrada normal del subproceso. Nos va a permitir escribir en el stream de entrada del subproceso, así podemos enviar datos al subproceso que se ejecute.</td></tr>
+              <tr><td><code>void destroy()</code></td><td>Elimina el subproceso.</td></tr>
+              <tr><td><code>int exitValue()</code></td><td>Devuelve el valor de salida del subproceso.</td></tr>
+              <tr><td><code>boolean isAlive()</code></td><td>Comprueba si el subproceso representado por Process está vivo.</td></tr>
+            </tbody></table></div>
+
+            <p>Por defecto el proceso que se crea (o subproceso) no tiene su propia terminal o consola. Todas las operaciones de E/S serán redirigidas al proceso padre, donde se puede acceder a ellas usando los métodos <code>getOutputStream()</code>, <code>getInputStream()</code> y <code>getErrorStream()</code>. El proceso padre utiliza estos flujos para alimentar la entrada y obtener la salida del subproceso. En algunas plataformas se pueden producir bloqueos en el subproceso debido al tamaño de búfer limitado para los flujos de entrada y salida estándar.</p>
+
+            <h4>Atributos de ProcessBuilder</h4>
+            <ul>
+              <li>Un comando. Es una lista de cadenas que representa el programa que se invoca y sus argumentos si los hay.</li>
+              <li>Un entorno (<code>environment</code>) con sus variables.</li>
+              <li>El directorio de trabajo. El valor por defecto es el directorio de trabajo del proceso en curso.</li>
+              <li>Una fuente de entrada estándar. Por defecto, el subproceso lee la entrada de una tubería. El código Java puede acceder a esta tubería a través de la secuencia de salida devuelta por <code>Process.getOutputStream()</code>. Sin embargo, la entrada estándar puede ser redirigida a otra fuente con <code>redirectInput()</code>. En este caso, <code>Process.getOutputStream()</code> devolverá una secuencia de salida nulo.</li>
+              <li>Un destino para la salida estándar y la salida de error. Por defecto, el subproceso escribe en las tuberías de la salida y el error estándar. El código Java puede acceder a estas tuberías a través de los flujos de entrada devueltos por <code>Process.getInputStream()</code> y <code>Process.getErrorStream()</code>. Igual que antes, la salida estándar y el error estándar pueden ser redirigidos a otros destinos utilizando <code>redirectOutput()</code> y <code>redirectError()</code>. En este caso, <code>Process.getInputStream()</code> y/o <code>Process.getErrorStream()</code> devuelven una secuencia de entrada nula.</li>
+              <li>Una propiedad <code>redirectErrorStream</code>. Inicialmente, esta propiedad es false, significa que la salida estándar y salida de error del subproceso se envían a dos corrientes separadas, que se pueden acceder a través de los métodos <code>Process.getInputStream()</code> y <code>Process.getErrorStream()</code>.</li>
+            </ul>
+
+            <div class="table-wrap"><table><thead><tr><th>Método</th><th>Misión</th></tr></thead><tbody>
+              <tr><td><code>ProcessBuilder command(String argumentos...)</code></td><td>Define el programa que se quiere ejecutar indicando sus argumentos como una lista de cadenas separadas por comas.</td></tr>
+              <tr><td><code>List&lt;String&gt; command()</code></td><td>Devuelve todos los argumentos del objeto ProcessBuilder.</td></tr>
+              <tr><td><code>Map&lt;String, String&gt; environment()</code></td><td>Devuelve en una estructura Map las variables de entorno del objeto ProcessBuilder.</td></tr>
+              <tr><td><code>ProcessBuilder redirectError(File file)</code></td><td>Redirige la salida de error estándar a un fichero.</td></tr>
+              <tr><td><code>ProcessBuilder redirectInput(File file)</code></td><td>Establece la fuente de entrada estándar en un fichero.</td></tr>
+              <tr><td><code>ProcessBuilder redirectOutput(File file)</code></td><td>Redirige la salida estándar a un fichero.</td></tr>
+              <tr><td><code>File directory()</code></td><td>Devuelve el directorio de trabajo del objeto ProcessBuilder.</td></tr>
+              <tr><td><code>ProcessBuilder directory(File directorio)</code></td><td>Establece el directorio de trabajo del objeto ProcessBuilder.</td></tr>
+              <tr><td><code>Process start()</code></td><td>Inicia un nuevo proceso utilizando los atributos del objeto ProcessBuilder.</td></tr>
+            </tbody></table></div>
+
+            <h4>Inicio de un nuevo proceso</h4>
+            <p>Para iniciar un nuevo proceso que utiliza el directorio de trabajo y el entorno del proceso en curso escribimos la siguiente orden:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">ProcessBuilder start()</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>Process p = new ProcessBuilder("Comando", "Argum1").start();</code></pre></div>
+            <p>Por ejemplo, para ejecutar el comando DIR de DOS podemos escribir lo siguiente:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">ProcessBuilder DIR</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>Process pb = new ProcessBuilder("CMD", "/C", "DIR").start();</code></pre></div>
+
+            <h4>CMD.EXE para comandos internos de Windows</h4>
+            <p>CMD inicia una nueva instancia del intérprete de comandos de Windows. Para ejecutar un comando escribemos desde el indicador del DOS: HELP CMD.</p>
+            <ul>
+              <li><code>CMD /C comando</code>: Ejecuta el comando especificado y luego finaliza.</li>
+              <li><code>CMD /K comando</code>: Ejecuta el comando especificado, pero sigue activo.</li>
+            </ul>
+            <p>Para los comandos de Windows que no tienen ejecutable (como por ejemplo DIR o ATTRIB) es necesario utilizar el comando CMD.EXE.</p>
+          </div>
+        </article>
+
+        <article class="tema-card" id="tema-java-ejemplos" data-searchable>
+          <div class="tema-header">
+            <span class="tema-num">13</span>
+            <h3>Ejemplos prácticos Java</h3>
+          </div>
+          <div class="tema-body">
+            <h4>Ejemplo 1: Ejecutar NOTEPAD</h4>
+            <p>El ejemplo1 de Java muestra cómo se puede ejecutar una aplicación de Windows, en este caso el NOTEPAD, que es el bloc de notas de Windows. Para los comandos de Windows que no tienen ejecutable (como por ejemplo DIR o ATTRIB) es necesario utilizar el comando CMD.EXE.</p>
+
+            <h4>Ejemplo 2: Ejecutar DIR y leer la salida</h4>
+            <p>El siguiente ejemplo ejecuta el comando DIR. Usaremos el método <code>getInputStream()</code> de la clase <code>Process</code> para leer el stream de salida del proceso, es decir, para leer lo que el comando DIR envía a la consola. Definiremos así el stream:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Definición del stream</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>Inputstream is = p.getInputStream();</code></pre></div>
+            <p>Para leer la salida usamos el método <code>read()</code> de <code>InputStream</code> que nos devolverá carácter a carácter la salida generada por el comando.</p>
+            <p>El método <code>waitFor()</code> hace que el proceso actual espere hasta que el subproceso representado por el objeto <code>Process</code> finalice. Este método recoge lo que <code>System.exit()</code> devuelve, por defecto en un programa Java si no se incluye esta orden el valor devuelto es 0, que normalmente responde a una finalización correcta del proceso.</p>
+
+            <h4>Ejemplo 3: Ejecutar un programa Java desde otro</h4>
+            <p>El siguiente ejemplo muestra un programa Java que ejecuta el programa Java anterior, en este caso el programa se ejecutará desde el programa IntelliJ Idea. Como el proceso a ejecutar se encuentra en la carpeta <code>bin</code> del proyecto será necesario crear un objeto <code>File</code> que referencie a dicho directorio. Después para establecer el directorio de trabajo para el proceso que se va a ejecutar se debe usar el método <code>directory()</code>, a continuación se ejecutará el proceso y por último será necesario recoger el resultado de salida usando el método <code>getInputStream()</code> del objeto.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================== ACTIVIDADES Y EJERCICIOS RESUELTOS ==================== -->
+      <section id="ejercicios-resueltos" class="section ejercicios-section" data-searchable>
+        <div class="section-header">
+          <h2>Actividades y ejemplos resueltos</h2>
+          <p>Las actividades de las presentaciones y los ejemplos de código de las carpetas, con su solución y explicación.</p>
+        </div>
+
+        <!-- Actividad 1.1 -->
+        <article class="exercise-card" id="actividad-1-1" data-searchable>
+          <div class="exercise-header">
+            <span class="badge nivel facil">Básico</span>
+            <span class="badge tema">Actividad 1.1</span>
+            <h3>Actividad 1.1 — Variable compartida entre padre e hijo</h3>
+          </div>
+          <div class="exercise-body">
+            <h4>Enunciado</h4>
+            <p>Realiza un programa en C que cree un proceso (tendremos 2 procesos, uno padre y otro hijo). El programa definirá una variable entera y le dará el valor 6. El proceso padre incrementará dicho valor en 5 y el hijo restará 5. Se deben mostrar los valores en pantalla.</p>
+            <p>Resultado esperado:</p>
+            <div class="code-wrap"><div class="code-head"><span class="file">Salida esperada</span></div><pre><code>Valor inicial de la variable: 6
+Variable en proceso hijo: 1
+Variable en proceso padre: 11</code></pre></div>
+
+            <h4>Solución</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">actividad1_1.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+void main(){
+
+    pid_t pid, Hijo_pid;
+
+    int valor_variable = 6;
+
+    printf("Valor inicial de la variable: %d\n", valor_variable);
+
+    pid = fork();
+
+    if (pid == -1){ // Ha ocurrido un error
+        printf("No se ha podido crear el proceso hijo...");
+        exit(-1);
+    }
+
+    if (pid == 0){ // Nos encontramos en el proceso hijo
+
+        valor_variable = valor_variable - 5;
+        printf("Variable en proceso hijo: %d\n", valor_variable);
+    }
+    else{ // Nos encontramos en el proceso padre
+
+        Hijo_pid = wait(NULL); // Espera a la finalización del proceso hijo
+
+        valor_variable = valor_variable + 5;
+
+        printf("Variable en proceso padre: %d\n", valor_variable);
+
+    }
+
+    exit(0);
+}</code></pre></div>
+            <h4>Explicación</h4>
+            <p>Después de <code>fork()</code>, padre e hijo tienen copias independientes de la variable. En el hijo, <code>6 - 5 = 1</code>; en el padre, <code>6 + 5 = 11</code>. La variable del hijo no modifica la del padre. Se usa <code>wait(NULL)</code> para que el padre no termine antes que el hijo.</p>
+          </div>
+        </article>
+
+        <!-- Actividad 1.2 -->
+        <article class="exercise-card" id="actividad-1-2" data-searchable>
+          <div class="exercise-header">
+            <span class="badge nivel facil">Básico</span>
+            <span class="badge tema">Actividad 1.2</span>
+            <h3>Actividad 1.2 — Pipe: hijo envía mensaje al padre</h3>
+          </div>
+          <div class="exercise-body">
+            <h4>Enunciado</h4>
+            <p>Siguiendo el ejemplo anterior, realiza un programa en C que cree un pipe en el que el hijo envíe un mensaje al padre, es decir, la información fluya del hijo al padre.</p>
+
+            <h4>Solución</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">actividad1_2.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(void) {
+    int fd[2];
+    if (pipe(fd) == -1) { perror("pipe"); return 1; }
+
+    pid_t pid = fork();
+    if (pid == -1) { perror("fork"); return 1; }
+
+    if (pid == 0) {                     /* HIJO: emisor */
+        close(fd[0]);                   /* cierra lectura */
+        const char *mensaje = "Hola desde el hijo";
+        size_t longitud = strlen(mensaje);
+        if (write(fd[1], mensaje, longitud) == -1) {
+            perror("write");
+            close(fd[1]);
+            _exit(1);
+        }
+        close(fd[1]);
+        _exit(0);
+    }
+
+    close(fd[1]);                       /* PADRE: receptor */
+    char buffer[128];
+    ssize_t n = read(fd[0], buffer, sizeof(buffer) - 1);
+    if (n == -1) {
+        perror("read");
+    } else {
+        buffer[n] = '\0';
+        printf("Padre recibe: %s\n", buffer);
+    }
+    close(fd[0]);
+    wait(NULL);
+    return 0;
+}</code></pre></div>
+            <h4>Explicación</h4>
+            <p><code>pipe(fd)</code> crea dos descriptores. El hijo cierra <code>fd[0]</code> y escribe en <code>fd[1]</code>; el padre cierra <code>fd[1]</code> y lee desde <code>fd[0]</code>. Se cierran los extremos no utilizados para evitar bloqueos y para que el canal se gestione correctamente.</p>
+          </div>
+        </article>
+
+        <!-- Actividad 1.3 -->
+        <article class="exercise-card" id="actividad-1-3" data-searchable>
+          <div class="exercise-header">
+            <span class="badge nivel medio">Intermedio</span>
+            <span class="badge tema">Actividad 1.3</span>
+            <h3>Actividad 1.3 — Señales: hijo envía SIGUSR1 y SIGKILL al padre</h3>
+          </div>
+          <div class="exercise-body">
+            <h4>Enunciado</h4>
+            <p>Realiza un programa en C en donde un hijo envíe 3 señales SIGUSR1 a su padre y después envíe una señal SIGKILL para que el proceso padre termine.</p>
+
+            <h4>Solución</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">actividad1_3.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;signal.h&gt;
+
+volatile sig_atomic_t contador = 0;
+
+void gestion_padre(int senal) {
+    (void)senal;
+    contador++;
+    printf("Padre: recibida señal SIGUSR1 (%d)\n", contador);
+    fflush(stdout);
+}
+
+int main(void){
+    signal(SIGUSR1, gestion_padre);
+
+    pid_t pid_hijo = fork();
+    if (pid_hijo == -1){
+        printf("Error al crear el proceso hijo...\n");
+        exit(-1);
+    }
+
+    if (pid_hijo == 0){ // HIJO
+        printf("Envía primera señal...\n");
+        kill(getppid(), SIGUSR1);
+        sleep(1);
+
+        printf("Envía segunda señal...\n");
+        kill(getppid(), SIGUSR1);
+        sleep(1);
+
+        printf("Envía última señal... y lo matará\n");
+        kill(getppid(), SIGUSR1);
+        sleep(1);
+
+        kill(getppid(), SIGKILL);
+        _exit(0);
+    }
+    else{ // PADRE
+        while(1){
+            pause();
+        }
+    }
+
+    return 0;
+}</code></pre></div>
+            <h4>Explicación</h4>
+            <p>El padre instala un manejador para <code>SIGUSR1</code> con <code>signal()</code>. El hijo descubre el PID del padre con <code>getppid()</code> y envía tres señales <code>SIGUSR1</code> separadas por <code>sleep(1)</code>. Finalmente envía <code>SIGKILL</code>, que termina al proceso inmediatamente y no se puede capturar. El padre permanece en <code>pause()</code> esperando señales hasta que es terminado.</p>
+          </div>
+        </article>
+
+        <!-- Ejemplos C -->
+        <article class="exercise-card" id="ejemplos-c" data-searchable>
+          <div class="exercise-header">
+            <span class="badge nivel facil">Básico</span>
+            <span class="badge tema">Ejemplos C</span>
+            <h3>Ejemplos de C resueltos</h3>
+          </div>
+          <div class="exercise-body">
+            <h4>ejemploSystem.c — Uso de system()</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemploSystem.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(void) {
+    int resultado = system("ls -la &gt; ficsalida");
+    if (resultado == -1) {
+        perror("system");
+        return 1;
+    }
+    system("gedit ficsalida");
+    int fallo = system("comando_que_no_existe");
+    printf("Estado devuelto por system(): %d\n", fallo);
+    return 0;
+}</code></pre></div>
+
+            <h4>ejemploExec.c — Uso de execl()</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemploExec.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void) {
+    puts("Antes de execl");
+    execl("/bin/ls", "ls", "-l", (char *) NULL);
+    perror("execl");
+    puts("Esta línea no aparece si execl funciona");
+    return 1;
+}</code></pre></div>
+
+            <h4>ejemplo1Fork.c — Uso básico de fork()</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemplo1Fork.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+void main(){
+    pid_t pid, Hijo_pid;
+    int valor_variable = 6;
+    printf("Valor inicial de la variable: %d\n", valor_variable);
+    pid = fork();
+    if (pid == -1){
+        printf("No se ha podido crear el proceso hijo...");
+        exit(-1);
+    }
+    if (pid == 0){
+        valor_variable = valor_variable - 5;
+        printf("Variable en proceso hijo: %d\n", valor_variable);
+    }
+    else{
+        Hijo_pid = wait(NULL);
+        valor_variable = valor_variable + 5;
+        printf("Variable en proceso padre: %d\n", valor_variable);
+    }
+    exit(0);
+}</code></pre></div>
+
+            <h4>ejemploPipe1.c — Hijo escribe al padre por pipe</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemploPipe1.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main()
+{
+    int fd[2];
+    char buffer[30];
+    pid_t pid;
+
+    pipe(fd);
+    pid = fork();
+
+    switch(pid){
+        case -1 :
+            printf("No se ha podido crear el hijo...");
+            exit(-1);
+            break;
+        case 0: // HIJO
+            printf("El HIJO escribe en el pipe...\n");
+            write(fd[1], "Hola papi", 10);
+            break;
+        default : // PADRE
+            wait(NULL);
+            printf("El padre lee del pipe...\n");
+            read(fd[0], buffer, 10);
+            printf("\tMensaje leido: %s\n", buffer);
+            break;
+    }
+}</code></pre></div>
+
+            <h4>ejemploPipe3.c — Padre escribe al hijo por pipe</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemploPipe3.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(void) {
+    int fd[2];
+    if (pipe(fd) == -1) { perror("pipe"); return 1; }
+    pid_t pid = fork();
+    if (pid == -1) { perror("fork"); return 1; }
+
+    if (pid == 0) {
+        close(fd[1]);
+        char mensaje[100];
+        ssize_t n = read(fd[0], mensaje, sizeof(mensaje) - 1);
+        if (n &gt;= 0) {
+            mensaje[n] = '\0';
+            printf("Hijo recibe: %s\n", mensaje);
+        }
+        close(fd[0]);
+        _exit(0);
+    }
+
+    close(fd[0]);
+    const char *texto = "Hola hijo";
+    if (write(fd[1], texto, strlen(texto)) == -1) perror("write");
+    close(fd[1]);
+    wait(NULL);
+    return 0;
+}</code></pre></div>
+
+            <h4>ejemWriteRead.c — Lectura y escritura de ficheros</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemWriteRead.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>/* Ejemplo de lectura y escritura de ficheros antes de usar pipes */</code></pre></div>
+            <p class="small muted">Ejemplo de lectura y escritura de ficheros de texto mencionado en las presentaciones.</p>
+
+            <h4>ejemploForkPipe.c — Comunicación bidireccional (abuelo, hijo, nieto)</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejemploForkPipe.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>/* Ejemplo con dos pipes (fd1 y fd2) para comunicación entre abuelo, hijo y nieto */</code></pre></div>
+            <p class="small muted">El abuelo usa fd1 para enviar información al hijo y recibe a través de fd2. El hijo usa fd2 para enviar al nieto y recibe a través de fd1. El nieto usa fd1 para enviar al hijo y recibe a través de fd2.</p>
+
+            <h4>fifocrea.c y fifoescribe.c — FIFOs con nombre</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">fifocrea.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void) {
+    const char *ruta = "FIFO2";
+    if (mkfifo(ruta, 0666) == -1) {
+        perror("mkfifo (¿ya existe?)");
+    }
+    int fd = open(ruta, O_RDONLY);
+    if (fd == -1) { perror("open"); return 1; }
+    char buffer[256];
+    ssize_t n;
+    while ((n = read(fd, buffer, sizeof buffer)) &gt; 0) {
+        if (write(STDOUT_FILENO, buffer, (size_t)n) == -1) {
+            perror("write consola"); break;
+        }
+    }
+    close(fd);
+    return 0;
+}</code></pre></div>
+            <div class="code-wrap"><div class="code-head"><span class="file">fifoescribe.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+    int fd = open("FIFO2", O_WRONLY);
+    if (fd == -1) { perror("open"); return 1; }
+    const char *mensaje = "Mensaje desde el emisor\n";
+    if (write(fd, mensaje, strlen(mensaje)) == -1) {
+        perror("write"); close(fd); return 1;
+    }
+    close(fd);
+    return 0;
+}</code></pre></div>
+
+            <h4>Sincronización con señales: sincronizar-1.c, sincronizar-2.c, sincronizar-3b.c</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">sincronizar-1.c</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+void manejador(int segnal){
+    printf("Hijo recibe señal...%d\n", segnal);
+}
+
+int main(){
+    int pid_hijo = fork();
+    switch(pid_hijo){
+        case -1:
+            printf("Error al crear el proceso hijo...\n");
+            exit(-1);
+        case 0: // HIJO
+            signal(SIGUSR1, manejador);
+            while(1){}
+            break;
+        default: // PADRE
+            sleep(1);
+            kill(pid_hijo, SIGUSR1);
+            sleep(1);
+            kill(pid_hijo, SIGUSR1);
+            break;
+    }
+    return 0;
+}</code></pre></div>
+          </div>
+        </article>
+
+        <!-- Ejemplos Java -->
+        <article class="exercise-card" id="ejemplos-java" data-searchable>
+          <div class="exercise-header">
+            <span class="badge nivel facil">Básico</span>
+            <span class="badge tema">Ejemplos Java</span>
+            <h3>Ejemplos de Java resueltos</h3>
+          </div>
+          <div class="exercise-body">
+            <h4>NotepadRuntime.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">NotepadRuntime.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.IOException;
+
+public class NotepadRuntime {
+    public static void main(String[] args) throws IOException {
+        Runtime.getRuntime().exec("notepad.exe");
+    }
+}</code></pre></div>
+
+            <h4>NotepadArchivo.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">NotepadArchivo.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.IOException;
+
+public class NotepadArchivo {
+    public static void main(String[] args) throws IOException {
+        String[] infoProceso = {"notepad.exe", "notas.txt"};
+        Process proceso = Runtime.getRuntime().exec(infoProceso);
+        System.out.println("Proceso lanzado: " + proceso.isAlive());
+    }
+}</code></pre></div>
+
+            <h4>EsperarProceso.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">EsperarProceso.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.IOException;
+
+public class EsperarProceso {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Process proceso = new ProcessBuilder("notepad.exe", "datos.txt").start();
+        int codigoRetorno = proceso.waitFor();
+        System.out.println("Fin de la ejecución: " + codigoRetorno);
+    }
+}</code></pre></div>
+
+            <h4>DiezNotepads.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">DiezNotepads.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.IOException;
+
+public class DiezNotepads {
+    public static void main(String[] args) throws IOException {
+        ProcessBuilder pb = new ProcessBuilder("notepad.exe");
+        for (int i = 0; i &lt; 10; i++) {
+            pb.start();
+        }
+    }
+}</code></pre></div>
+
+            <h4>ListarDirectorio.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ListarDirectorio.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
+public class ListarDirectorio {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "dir");
+        pb.redirectErrorStream(true);
+        Process proceso = pb.start();
+
+        try (BufferedReader lector = new BufferedReader(
+                new InputStreamReader(proceso.getInputStream(), Charset.defaultCharset()))) {
+            String linea;
+            while ((linea = lector.readLine()) != null) {
+                System.out.println(linea);
+            }
+        }
+        int codigo = proceso.waitFor();
+        System.out.println("Código de salida: " + codigo);
+    }
+}</code></pre></div>
+
+            <h4>EjecutarClaseExterna.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">EjecutarClaseExterna.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.File;
+import java.io.IOException;
+
+public class EjecutarClaseExterna {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        File directorioBin = new File("bin");
+        ProcessBuilder pb = new ProcessBuilder("java", "-cp", ".", "MiPrograma");
+        pb.directory(directorioBin);
+        pb.redirectErrorStream(true);
+
+        Process proceso = pb.start();
+        proceso.getInputStream().transferTo(System.out);
+        int codigo = proceso.waitFor();
+        System.out.println("Código devuelto: " + codigo);
+    }
+}</code></pre></div>
+
+            <h4>EntornoProceso.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">EntornoProceso.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.util.Map;
+
+public class EntornoProceso {
+    public static void main(String[] args) {
+        ProcessBuilder pb = new ProcessBuilder("notepad.exe");
+        Map&lt;String, String&gt; entorno = pb.environment();
+        entorno.put("MI_VARIABLE", "valor");
+        System.out.println("Número de procesadores: " + entorno.get("NUMBER_OF_PROCESSORS"));
+        System.out.println("PATH: " + entorno.get("PATH"));
+    }
+}</code></pre></div>
+
+            <h4>RedirigirSalida.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">RedirigirSalida.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.File;
+import java.io.IOException;
+
+public class RedirigirSalida {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "dir");
+        pb.directory(new File("C:/"));
+        pb.redirectOutput(new File("salida.txt"));
+        pb.redirectError(new File("errores.txt"));
+
+        Process proceso = pb.start();
+        int codigo = proceso.waitFor();
+        System.out.println("Código de salida: " + codigo);
+    }
+}</code></pre></div>
+
+            <h4>ejercicio0.java</h4>
+            <div class="code-wrap"><div class="code-head"><span class="file">ejercicio0.java</span><button class="copy" onclick="copyCode(this)">Copiar</button></div><pre><code>import java.io.IOException;
+
+public class ejercicio0 {
+    public static void main(String[] args) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "dir");
+            pb.inheritIO();
+            Process p = pb.start();
+            p.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================== REPASO RÁPIDO ==================== -->
+      <section id="repaso" class="section repaso-section" data-searchable>
+        <div class="section-header">
+          <h2>Repaso rápido</h2>
+          <p>Conceptos clave, tarjetas y comparativas para repasar antes del examen, basados en las dos presentaciones.</p>
+        </div>
+
+        <div class="repaso-grid">
+          <div class="flashcards-wrap">
+            <h3>Tarjetas de conceptos</h3>
+            <div class="flashcards">
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>¿Qué es un proceso?</h4></div>
+                  <div class="flashcard-face back"><p>Un programa en ejecución con código ejecutable, datos, pila, CP, puntero de pila y registros.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>¿Qué es el BCP?</h4></div>
+                  <div class="flashcard-face back"><p>Estructura de datos estática del SO que almacena la información administrativa de un proceso.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>Estados de un proceso</h4></div>
+                  <div class="flashcard-face back"><p>En ejecución, Listo y Bloqueado. Las transiciones las gestiona el planificador del SO.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>¿Qué devuelve fork()?</h4></div>
+                  <div class="flashcard-face back"><p>-1 si error, 0 si es el hijo, PID del hijo si es el padre.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>fd[0] y fd[1] en un pipe</h4></div>
+                  <div class="flashcard-face back"><p>fd[0] es el descriptor de lectura; fd[1] es el de escritura.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>¿Qué es un FIFO?</h4></div>
+                  <div class="flashcard-face back"><p>Pipe con nombre que permite comunicación entre procesos no emparentados. First In, First Out.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>Señales: SIGUSR1 y SIGKILL</h4></div>
+                  <div class="flashcard-face back"><p>SIGUSR1 es de usuario y se puede capturar. SIGKILL termina el proceso y no se puede capturar.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>Runtime vs ProcessBuilder</h4></div>
+                  <div class="flashcard-face back"><p>Runtime usa exec(). ProcessBuilder usa start(). Ambos devuelven un objeto Process.</p></div>
+                </div>
+              </article>
+              <article class="flashcard">
+                <div class="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-face front"><h4>¿Qué hace waitFor()?</h4></div>
+                  <div class="flashcard-face back"><td>Suspende la ejecución del programa Java hasta que el subproceso termine y devuelve su código de salida.</td></div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="comparativas-wrap">
+            <h3>Comparativas útiles</h3>
+            <div class="comparison-table">
+              <table>
+                <thead><tr><th>Concepto</th><th>Opción A</th><th>Opción B</th><th>Cuándo usar cada una</th></tr></thead>
+                <tbody>
+                  <tr><td>Concurrencia vs Paralelismo</td><td>Concurrencia</td><td>Paralelismo</td><td>Concurrencia: tareas avanzan alternadamente en un núcleo. Paralelismo: se ejecutan a la vez en varios núcleos.</td></tr>
+                  <tr><td>system() vs execl()</td><td>system()</td><td>execl()</td><td>system() ejecuta por intérprete de comandos; execl() reemplaza el proceso actual por uno nuevo.</td></tr>
+                  <tr><td>Pipe sin nombre vs FIFO</td><td>Pipe sin nombre</td><td>FIFO</td><td>Pipe: procesos emparentados (heredan descriptores). FIFO: procesos independientes (se conocen por nombre).</td></tr>
+                  <tr><td>Runtime vs ProcessBuilder</td><td>Runtime.exec()</td><td>ProcessBuilder.start()</td><td>ProcessBuilder permite configurar directorio, entorno y redirecciones antes de lanzar.</td></tr>
+                  <tr><td>getInputStream() vs getOutputStream()</td><td>getInputStream()</td><td>getOutputStream()</td><td>Desde Java: getInputStream() lee la salida del proceso; getOutputStream() escribe a su entrada.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="errores-wrap">
+          <h3>Errores típicos y cómo evitarlos</h3>
+          <div class="errores-grid">
+            <div class="error-card">
+              <h4>Olvidar cerrar extremos del pipe</h4>
+              <p>Cada proceso debe cerrar el descriptor que no usa. Si no, puede haber bloqueos o lecturas que no reciben EOF.</p>
+            </div>
+            <div class="error-card">
+              <h4>Creer que el hijo comparte variables con el padre</h4>
+              <p>Tras fork(), cada proceso tiene su propia copia de la memoria. Modificar una variable en uno no se refleja en el otro.</p>
+            </div>
+            <div class="error-card">
+              <h4>Interpretar mal el retorno de fork()</h4>
+              <p>0 es hijo; PID positivo es padre; -1 es error.</p>
+            </div>
+            <div class="error-card">
+              <h4>Intentar capturar SIGKILL</h4>
+              <p>SIGKILL no se puede capturar ni ignorar.</p>
+            </div>
+            <div class="error-card">
+              <h4>Usar waitFor() sin leer la salida del proceso</h4>
+              <p>En Java, si el subproceso produce mucha salida y no se consume, el búfer puede llenarse y bloquear.</p>
+            </div>
+            <div class="error-card">
+              <h4>Lanzar DIR como ejecutable independiente en Windows</h4>
+              <p>DIR es comando interno de cmd.exe; usar <code>cmd.exe /c dir</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <p><strong>Fuente principal:</strong> "UD1 Programación de aplicaciones multiproceso en Java" y "UD1 Programación multiproceso" (diapositivas PowerPoint).</p>
+        <p>Todo el contenido teórico está extraído directamente de las dos presentaciones. Los ejemplos de código se han copiado de los archivos de las carpetas de ejercicios.</p>
+        <a href="#top" class="back-top">↑ Volver al inicio</a>
+      </div>
+</div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
